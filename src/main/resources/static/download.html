@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Encrypted File — CryptaShare</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🔒</div>
+        <div>
+          <span class="brand-title">CryptaShare</span>
+          <span class="brand-badge">Client Decryption</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Upload & Share</a>
+        <a href="manage.html">My Shared Links</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="card-title">Download & Decrypt File</h1>
+        <p class="card-subtitle">
+          This file is end-to-end encrypted. It will be downloaded as ciphertext and decrypted locally on your device.
+        </p>
+      </div>
+
+      <div class="card-body">
+
+        <!-- Error & Status Alerts -->
+        <div id="statusAlert" class="alert alert-danger" style="display: none;">
+          <div>⚠️</div>
+          <div id="statusAlertText">Error loading file details.</div>
+        </div>
+
+        <!-- Initial loading state -->
+        <div id="loadingBox" style="text-align: center; padding: 3rem 0;">
+          <div class="spinner" style="border-color: rgba(59, 130, 246, 0.2); border-top-color: var(--primary); width: 2.25rem; height: 2.25rem;"></div>
+          <div style="margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem;">Validating access token and retrieving file metadata...</div>
+        </div>
+
+        <!-- File Metadata & Action Area -->
+        <div id="fileInfoBox" style="display: none;">
+          <div style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; gap: 1rem;">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <span id="metaFileIcon" style="font-size: 2.5rem;">📄</span>
+                <div>
+                  <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em;">Original File</span>
+                  <h2 id="metaFilename" style="font-size: 1.35rem; color: var(--text-main); margin-top: 0.2rem; word-break: break-all;">-</h2>
+                </div>
+              </div>
+              <span id="metaStatusBadge" class="badge badge-active">Active</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem;">
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Ciphertext Size</span>
+                <strong id="metaCipherSize">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Link Expiry</span>
+                <strong id="metaExpiresAt">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Downloads</span>
+                <strong id="metaDownloadLimit">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Decryption Key</span>
+                <strong id="metaKeyStatus" style="color: var(--success);">In URL (#)</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="security-banner">
+            <div>🛡️</div>
+            <div>
+              <strong>Client-Side Decryption:</strong> The secret 256-bit AES key is contained exclusively in the URL fragment above. The server only hosts the raw encrypted bytes. Decryption and tamper verification happen on your device.
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="decryptDownloadBtn">
+            <span id="downloadBtnIcon">⬇️</span>
+            <span id="downloadBtnText">Decrypt & Download File</span>
+          </button>
+        </div>
+
+        <!-- Success Notification -->
+        <div id="successBox" class="alert alert-success" style="display: none;">
+          <div>✅</div>
+          <div>File decrypted and verified successfully! Your browser has saved the original file.</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div><strong>CryptaShare</strong> &bull; Secure File Exchange Portal &bull; Java 21, Spring Boot & Web Crypto API</div>
+  </footer>
+
+  <script src="js/crypto-utils.js"></script>
+  <script src="js/download.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+# Maven build outputs
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# Application storage & encrypted files
+storage/
+uploads/
+*.enc
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Sensitive environment files
+.env
+.env.local
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Local application configuration
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# Protect configuration files if they contain credentials
+src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/resources/application.yaml
+src/main/resources/application-*.properties
+src/main/resources/application-*.yml
+src/main/resources/application-*.yaml
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Local Spring Boot configuration
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# Ignore application configuration until credentials are checked
+/src/main/resources/application.properties
+/src/main/resources/application.yml
+/src/main/resources/application.yaml
+/src/main/resources/application-*.properties
+/src/main/resources/application-*.yml
+/src/main/resources/application-*.yaml
+# Local backup archives
+*.zip

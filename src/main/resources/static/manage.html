@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Shared Links & Revocation — CryptaShare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🔒</div>
+        <div>
+          <span class="brand-title">CryptaShare</span>
+          <span class="brand-badge">Link Management</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Upload & Share</a>
+        <a href="manage.html" class="active">My Shared Links</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content" style="max-width: 1040px;">
+    <!-- Stats Row -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Files Uploaded</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statActive" style="color: var(--success);">0</div>
+        <div class="stat-label">Active Links</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statRevoked" style="color: var(--danger);">0</div>
+        <div class="stat-label">Revoked / Purged</div>
+      </div>
+    </div>
+
+    <!-- Active Uploads Dashboard -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 class="card-title">Shared Links on This Device</h2>
+          <p class="card-subtitle">Manage files uploaded from your current browser session. Revoke access to destroy ciphertext anytime.</p>
+        </div>
+        <button type="button" class="btn btn-outline" id="refreshAllBtn" style="padding: 0.45rem 0.95rem; font-size: 0.85rem;">🔄 Refresh Status</button>
+      </div>
+
+      <div class="card-body">
+        <div id="dashboardAlert" class="alert alert-success" style="display: none;">
+          <div>✅</div>
+          <div id="dashboardAlertText">Notification message</div>
+        </div>
+
+        <div id="emptyState" style="text-align: center; padding: 3rem 1rem; color: var(--text-muted); display: none;">
+          <div style="font-size: 3rem; margin-bottom: 0.75rem;">📭</div>
+          <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.25rem;">No files uploaded yet</h3>
+          <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Files you encrypt and upload on this browser will be listed here with their status and quick actions.</p>
+          <a href="index.html" class="btn btn-primary" style="width: auto; display: inline-flex;">Upload a File Now</a>
+        </div>
+
+        <div class="table-responsive" id="tableContainer">
+          <table class="data-table" id="linksTable">
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Size</th>
+                <th>Expires</th>
+                <th>Downloads</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="linksTableBody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manual Token Search Section -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Inspect or Revoke by Token</h2>
+        <p class="card-subtitle">Looking for a file uploaded from another browser or device? Paste its revocation secret token here.</p>
+      </div>
+
+      <div class="card-body">
+        <form id="tokenLookupForm">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="revokeTokenInput">Revocation Secret Token</label>
+            <div class="copy-input-row">
+              <input type="text" id="revokeTokenInput" placeholder="Paste your 43-character revocation secret token..." required>
+              <button type="submit" class="btn btn-outline" id="lookupBtn" style="white-space: nowrap;">Check Status</button>
+            </div>
+          </div>
+        </form>
+
+        <div id="manualAlert" class="alert alert-danger" style="display: none; margin-top: 1rem;">
+          <div>⚠️</div>
+          <div id="manualAlertText">Error message</div>
+        </div>
+
+        <!-- Manual Result View -->
+        <div id="manualResultBox" style="display: none; margin-top: 1.5rem;">
+          <div style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div>
+                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Original Filename</span>
+                <h3 id="manualFilename" style="font-size: 1.25rem; color: var(--text-main); margin-top: 0.2rem;">-</h3>
+              </div>
+              <span id="manualBadge" class="badge badge-active">Active</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.88rem;">
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Ciphertext Size</span>
+                <strong id="manualSize">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Expires</span>
+                <strong id="manualExpires">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Downloads</span>
+                <strong id="manualDownloads">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--danger-light); border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 1rem;">
+            <div>
+              <div style="font-weight: 700; color: #991b1b; font-size: 0.92rem;">Irreversible Revocation</div>
+              <div style="font-size: 0.82rem; color: #7f1d1d;">Invalidates all recipient access and deletes ciphertext from server disk immediately.</div>
+            </div>
+            <button type="button" class="btn btn-danger" id="manualRevokeBtn" style="width: auto; padding: 0.55rem 1rem; font-size: 0.85rem;">
+              🗑️ Revoke Link Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <h3 class="modal-title">Confirm Link Revocation</h3>
+      <p class="modal-desc" id="modalDesc">
+        Are you sure you want to revoke this file link? This action is permanent: the download link will stop working and the encrypted file will be purged from server storage.
+      </p>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-outline" id="modalCancelBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modalConfirmBtn">Yes, Revoke Link</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div><strong>CryptaShare</strong> &bull; Secure File Exchange Portal &bull; Java 21, Spring Boot & Web Crypto API</div>
+  </footer>
+
+  <script src="js/crypto-utils.js"></script>
+  <script src="js/manage.js"></script>
+</body>
+</html>

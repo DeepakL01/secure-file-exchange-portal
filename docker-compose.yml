@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: cryptashare-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-secure_file_share}
+      MYSQL_USER: ${DB_USER:-secure_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-securepass123}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 5s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cryptashare-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://db:3306/${DB_NAME:-secure_file_share}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: ${DB_USER:-secure_user}
+      DB_PASSWORD: ${DB_PASSWORD:-securepass123}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-}
+      STORAGE_DIR: /app/storage/uploads
+    volumes:
+      - app_storage:/app/storage/uploads
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
+  app_storage:

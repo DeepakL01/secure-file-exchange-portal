@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptaShare — Zero-Knowledge Secure File Exchange</title>
+  <link rel="stylesheet" href="css/style.css"> 
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🔒</div>
+        <div>
+          <span class="brand-title">CryptaShare</span>
+          <span class="brand-badge">Client AES-256-GCM</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" class="active">Upload & Share</a>
+        <a href="manage.html">My Shared Links</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-pill">
+        <span>🛡️</span> Zero-Knowledge End-to-End Cryptography
+      </div>
+      <h1 class="hero-title">Share Files With Complete Privacy & Ephemeral Control</h1>
+      <p class="hero-subtitle">
+        Your files are encrypted in your browser before they ever leave your device.
+        The server only stores ciphertext — never the plaintext, and never the decryption key.
+      </p>
+    </div>
+  </section>
+
+  <!-- Features Highlight Grid -->
+  <section class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔐</div>
+      <h3 class="feature-title">AES-256-GCM In Browser</h3>
+      <p class="feature-desc">Every file is protected with military-grade authenticated encryption using the native Web Crypto API.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧩</div>
+      <h3 class="feature-title">Zero-Knowledge Key URLs</h3>
+      <p class="feature-desc">Decryption keys reside strictly in URL fragments (<code>#key=...</code>). By web standards, keys are never sent over HTTP.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⏳</div>
+      <h3 class="feature-title">Ephemeral & Limits</h3>
+      <p class="feature-desc">Configure auto-expiration (15m to 7 days), download limits (e.g. self-destruct after 1 download), or revoke anytime.</p>
+    </div>
+  </section>
+
+  <!-- Upload Interface -->
+  <main class="main-content" style="margin-top: 0;">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Upload & Encrypt File</h2>
+        <p class="card-subtitle">
+          Select or drag any file. Plaintext never touches the server.
+        </p>
+      </div>
+
+      <div class="card-body">
+        <div class="security-banner">
+          <div>💡</div>
+          <div>
+            <strong>How it works:</strong> A fresh 256-bit AES key and 96-bit random IV are generated on your computer. Plaintext is encrypted locally. Only encrypted ciphertext is sent to the backend.
+          </div>
+        </div>
+
+        <form id="uploadForm">
+          <div class="form-group">
+            <label class="form-label">File to Encrypt</label>
+            <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Drop file here or click to browse">
+              <div class="drop-zone-icon">📁</div>
+              <div class="drop-zone-title">Drag & drop your file here, or click to browse</div>
+              <div class="drop-zone-hint">Supports all file formats (PDF, documents, images, videos, archives, binaries up to 50 MB)</div>
+              <input type="file" id="fileInput" class="file-input">
+            </div>
+
+            <!-- Selected File Pill -->
+            <div id="fileSelectedBox" class="selected-file-box" style="display: none;">
+              <div class="file-info">
+                <span class="file-type-icon" id="fileTypeIcon">📄</span>
+                <div>
+                  <div class="file-name" id="selectedFileName">filename.ext</div>
+                  <div class="file-meta-sub" id="selectedFileSize">0 KB</div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline" id="clearFileBtn" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;">Change File</button>
+            </div>
+          </div>
+
+          <!-- Controls: Expiry & Download Limit -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="expirySelect">Link Expiration</label>
+              <select id="expirySelect">
+                <option value="15">15 Minutes</option>
+                <option value="60" selected>1 Hour (Default)</option>
+                <option value="360">6 Hours</option>
+                <option value="1440">24 Hours (1 Day)</option>
+                <option value="4320">3 Days</option>
+                <option value="10080">7 Days</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="downloadLimitSelect">Download Limit</label>
+              <select id="downloadLimitSelect">
+                <option value="0" selected>Unlimited Downloads</option>
+                <option value="1">1 Download (Self-Destruct)</option>
+                <option value="3">3 Downloads</option>
+                <option value="5">5 Downloads</option>
+                <option value="10">10 Downloads</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Cryptographic Progress Box (hidden by default) -->
+          <div id="cryptoProgressBox" class="crypto-progress-box" style="display: none;">
+            <div class="progress-header">
+              <span id="progressStatusText">Encrypting file locally in browser...</span>
+              <span id="progressPercentage">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+              <span>1. Generate Key</span>
+              <span>2. AES-256-GCM Encrypt</span>
+              <span>3. Transmit Ciphertext</span>
+              <span>4. Complete</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span id="btnIcon">🔒</span>
+            <span id="btnText">Encrypt & Generate Secret Link</span>
+          </button>
+        </form>
+
+        <div id="errorAlert" class="alert alert-danger" style="display: none;">
+          <div>⚠️</div>
+          <div id="errorMessage">An error occurred during encryption or upload.</div>
+        </div>
+
+        <!-- Generated Link & Management Result Box -->
+        <div id="resultBox" class="result-card" style="display: none;">
+          <h3>✅ File Encrypted & Link Generated</h3>
+
+          <div class="field-group">
+            <label>Shareable Download Link (Send to recipient)</label>
+            <div class="copy-input-row">
+              <input type="text" id="downloadUrlInput" readonly>
+              <button type="button" class="btn btn-outline copy-btn" id="copyDownloadBtn">📋 Copy Link</button>
+              <a id="previewShareBtn" href="#" target="_blank" class="btn btn-outline copy-btn">👁️ Open</a>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem;">
+              The secret decryption key is stored after <code>#key=...</code> and never reaches our servers.
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Revocation Secret URL (Keep for yourself to revoke anytime)</label>
+            <div class="copy-input-row">
+              <input type="text" id="revokeUrlInput" readonly>
+              <button type="button" class="btn btn-outline copy-btn" id="copyRevokeBtn">📋 Copy Link</button>
+              <a id="openManageBtn" href="manage.html" class="btn btn-outline copy-btn">Manage</a>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.85rem; color: var(--text-muted); padding-top: 0.75rem; border-top: 1px solid var(--border);">
+            <div><strong>Expires:</strong> <span id="expiresAtSpan">-</span></div>
+            <div><strong>Download Limit:</strong> <span id="limitSpan">-</span></div>
+            <div><strong>Ciphertext Size:</strong> <span id="cipherSizeSpan">-</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div><strong>CryptaShare</strong> &bull; Secure File Exchange Portal &bull; Java 21, Spring Boot & Web Crypto API</div>
+    <div class="footer-links">
+      <a href="index.html">Upload File</a>
+      <a href="manage.html">Manage Links</a>
+    </div>
+  </footer>
+
+  <script src="js/crypto-utils.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>
