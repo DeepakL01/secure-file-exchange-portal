@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Report - Secure File Exchange Portal</title>
+  <style>
+    /* -------------------------------------------------------------
+       Academic Project Report Print & Screen Styling
+       Optimized for Direct Print to PDF (A4 Format)
+       ------------------------------------------------------------- */
+    @page {
+      size: A4;
+      margin: 25mm 20mm 25mm 20mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      line-height: 1.6;
+      color: #111111;
+      background-color: #f8fafc;
+    }
+
+    .report-wrapper {
+      max-width: 210mm;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 25mm 20mm;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Print Controls Banner (Screen Only) */
+    .print-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 24px;
+      margin: -25mm -20mm 20mm -20mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .print-btn {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .print-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* Page Breaks */
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .report-wrapper {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+        box-shadow: none;
+      }
+      .print-bar {
+        display: none !important;
+      }
+      .page-break {
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0;
+      }
+    }
+
+    /* Cover Page */
+    .cover-page {
+      text-align: center;
+      min-height: 240mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20mm 0;
+    }
+
+    .cover-univ {
+      font-size: 16pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .cover-dept {
+      font-size: 13pt;
+      font-weight: 600;
+      color: #334155;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .cover-badge {
+      font-family: sans-serif;
+      font-size: 10pt;
+      font-weight: bold;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 25px;
+    }
+
+    .cover-title {
+      font-size: 22pt;
+      font-weight: bold;
+      line-height: 1.3;
+      margin: 20px 0 15px;
+      color: #0f172a;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      font-style: italic;
+      color: #475569;
+      max-width: 80%;
+      margin: 0 auto 30px;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      text-align: left;
+      margin: 40px 20px;
+      font-size: 11pt;
+      line-height: 1.8;
+    }
+
+    .cover-footer {
+      font-size: 11pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #334155;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4 {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0f172a;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 18pt;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h2 {
+      font-size: 14pt;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      color: #1e3a8a;
+    }
+
+    h3 {
+      font-size: 12pt;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    /* Callout & Highlight Boxes */
+    .callout {
+      background: #f1f5f9;
+      border-left: 4px solid #2563eb;
+      padding: 12px 16px;
+      margin: 15px 0;
+      font-size: 11pt;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .callout-title {
+      font-weight: bold;
+      font-family: sans-serif;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 10.5pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-family: sans-serif;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    /* Code & Technical Blocks */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 10pt;
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 28px;
+      margin-bottom: 14px;
+    }
+
+    li {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    /* Diagram Containers */
+    .diagram-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 18px;
+      margin: 20px 0;
+      text-align: center;
+      page-break-inside: avoid;
+      font-family: sans-serif;
+    }
+
+    .workflow-step {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 6px;
+      font-size: 10pt;
+      font-weight: 600;
+      color: #1e293b;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .workflow-arrow {
+      display: inline-block;
+      color: #2563eb;
+      font-weight: bold;
+      margin: 0 4px;
+    }
+
+    .caption {
+      font-size: 10pt;
+      font-style: italic;
+      color: #64748b;
+      margin-top: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="report-wrapper">
+
+  <!-- Print Action Bar (Hidden on Print / PDF export) -->
+  <div class="print-bar">
+    <div>
+      <strong>Secure File Exchange Portal</strong> &bull; Complete Project Report (A4 Printable Document)
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      🖨️ Save as PDF / Print
+    </button>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- COVER PAGE                                                                -->
+  <!-- ========================================================================= -->
+  <div class="cover-page">
+    <div>
+      <div class="cover-univ">Department of Computer Science &amp; Engineering</div>
+      <div class="cover-dept">Academic Engineering Project Report</div>
+      <div class="cover-badge">Cybersecurity &bull; Cryptography &bull; Web Engineering</div>
+    </div>
+
+    <div>
+      <h1 class="cover-title">SECURE FILE EXCHANGE PORTAL</h1>
+      <div class="cover-subtitle">
+        Zero-Knowledge In-Browser AES-256-GCM Encryption with Ephemeral Link Lifecycle Control
+      </div>
+    </div>
+
+    <div class="cover-meta-grid">
+      <div>
+        <strong>Submitted By:</strong><br>
+        Candidate Name: Deepak L<br>
+        Department: Computer Science &amp; Engineering<br>
+        Course: Final Year B.Tech / B.E. Mini-Project
+      </div>
+      <div>
+        <strong>Technology Stack:</strong><br>
+        Backend: Java 21, Spring Boot 3.3.4<br>
+        Database: MySQL 8.0 &bull; Spring Data JPA<br>
+        Frontend: HTML5, CSS3, Web Crypto API
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      Academic Year: 2026 &bull; Final Semester Examination
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- CERTIFICATE & DECLARATION TEMPLATE                                        -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Certificate of Approval</h1>
+  <p style="margin-top: 30px;">
+    This is to certify that the project report entitled <strong>"Secure File Exchange Portal with Zero-Knowledge In-Browser AES-256-GCM Encryption"</strong> submitted by <strong>Deepak L</strong> in partial fulfillment of the requirements for the award of the Degree of Bachelor of Technology / Bachelor of Engineering in Computer Science &amp; Engineering is an authentic record of independent work carried out under guidance.
+  </p>
+
+  <div style="margin-top: 80px; display: flex; justify-content: space-between;">
+    <div style="text-align: center;">
+      ___________________________<br>
+      <strong>Project Guide</strong><br>
+      Department of CSE
+    </div>
+    <div style="text-align: center;">
+      ___________________________<br>
+      <strong>Head of Department</strong><br>
+      Department of CSE
+    </div>
+  </div>
+
+  <h1 style="margin-top: 60px;">Abstract</h1>
+  <p>
+    Conventional cloud storage and file-sharing systems expose user data to substantial privacy risks because encryption keys and plaintext contents are typically stored or processed directly on centralized backend servers. In the event of a database compromise, insider threat, or server infrastructure breach, sensitive files can be decrypted and exposed without user authorization.
+  </p>
+  <p>
+    This project presents <strong>CryptaShare: Secure File Exchange Portal</strong>, a zero-knowledge web platform designed to eliminate centralized trust. Files are encrypted locally inside the uploader’s browser prior to transmission using <strong>AES-256-GCM</strong> (Galois/Counter Mode) via the browser-native <strong>Web Crypto API</strong>. The symmetric key is generated strictly in browser volatile memory and appended to the URL fragment (<code>#key=...</code>). Because URL fragments are omitted from HTTP requests by web specifications (RFC 3986), the backend server and MySQL database never receive, log, or store the decryption key or plaintext payload.
+  </p>
+  <p>
+    Furthermore, the system implements ephemeral access controls, including configurable time-based expirations (15 minutes to 7 days), server-enforced download counters (such as single-use self-destruct limits), and instantaneous link revocation paired with immediate physical ciphertext purges from disk. Access and revocation tokens are protected using 256-bit cryptographically secure pseudorandom generators (CSPRNG), and only their <strong>SHA-256 digests</strong> are stored in MySQL. The system was implemented in Java 21 LTS, Spring Boot 3.3.4, and vanilla web standards, achieving a verified 24-test automated test suite with zero failures.
+  </p>
+
+  <!-- ========================================================================= -->
+  <!-- TABLE OF CONTENTS                                                         -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Table of Contents</h1>
+  <table style="border: none;">
+    <tr style="background: none;"><td style="border: none;"><strong>1. Introduction</strong></td><td style="border: none; text-align: right;"><strong>1</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">1.1 Background &amp; Motivation</td><td style="border: none; text-align: right;">1</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">1.2 Problem Statement</td><td style="border: none; text-align: right;">1</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">1.3 Project Objectives</td><td style="border: none; text-align: right;">2</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">1.4 Scope of the Project</td><td style="border: none; text-align: right;">2</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>2. Literature Survey &amp; Theoretical Background</strong></td><td style="border: none; text-align: right;"><strong>3</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">2.1 Symmetric Cryptography &amp; Authenticated Encryption</td><td style="border: none; text-align: right;">3</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">2.2 URL Fragment Protocol Specification (RFC 3986)</td><td style="border: none; text-align: right;">4</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">2.3 Existing Systems vs. Proposed System</td><td style="border: none; text-align: right;">4</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>3. System Requirements Specification</strong></td><td style="border: none; text-align: right;"><strong>5</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">3.1 Functional Requirements</td><td style="border: none; text-align: right;">5</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">3.2 Non-Functional Requirements</td><td style="border: none; text-align: right;">5</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">3.3 Software &amp; Hardware Specifications</td><td style="border: none; text-align: right;">6</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>4. System Architecture &amp; Design</strong></td><td style="border: none; text-align: right;"><strong>7</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">4.1 High-Level Architectural Model</td><td style="border: none; text-align: right;">7</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">4.2 Cryptographic Sequence &amp; Execution Workflow</td><td style="border: none; text-align: right;">8</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">4.3 Database Schema &amp; Entity Relationships</td><td style="border: none; text-align: right;">9</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>5. Implementation Details</strong></td><td style="border: none; text-align: right;"><strong>10</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">5.1 Client-Side Web Crypto Subsystem</td><td style="border: none; text-align: right;">10</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">5.2 Token Generation &amp; Hashing Service</td><td style="border: none; text-align: right;">11</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">5.3 Secure Storage Service &amp; Path Traversal Defense</td><td style="border: none; text-align: right;">12</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">5.4 Core Business Orchestrator &amp; REST Controllers</td><td style="border: none; text-align: right;">12</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>6. Testing &amp; Verification</strong></td><td style="border: none; text-align: right;"><strong>13</strong></td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">6.1 Automated Unit &amp; Integration Test Suite</td><td style="border: none; text-align: right;">13</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">6.2 Test Case Results Matrix</td><td style="border: none; text-align: right;">14</td></tr>
+    <tr style="background: none;"><td style="border: none; padding-left: 20px;">6.3 Manual Evaluation Scenarios</td><td style="border: none; text-align: right;">15</td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>7. Security Analysis &amp; Limitations</strong></td><td style="border: none; text-align: right;"><strong>16</strong></td></tr>
+    <tr style="background: none;"><td style="border: none;"><strong>8. Conclusion &amp; Future Scope</strong></td><td style="border: none; text-align: right;"><strong>17</strong></td></tr>
+  </table>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 1: INTRODUCTION                                                   -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 1: Introduction</h1>
+
+  <h2>1.1 Background &amp; Motivation</h2>
+  <p>
+    In modern digital workflows, individuals and organizations frequently exchange confidential documents such as financial statements, medical records, legal contracts, source code, and identification credentials. Traditional cloud storage and file transfer solutions (e.g., standard Google Drive, Dropbox, or WeTransfer links) operate under a server-mediated trust paradigm. In this model, unencrypted files or server-managed encrypted files are uploaded directly to centralized servers. The cloud provider retains access to the decryption keys or the raw plaintext.
+  </p>
+  <p>
+    This centralized model creates significant security vulnerabilities. Server infrastructure is exposed to database leaks, configuration errors, unauthorized insider inspection, and legal subpoenas. When a breach occurs, all stored plaintext files are compromised simultaneously.
+  </p>
+
+  <h2>1.2 Problem Statement</h2>
+  <p>
+    To guarantee true confidentiality and data privacy, a secure file sharing portal must adhere to the <strong>Zero-Knowledge Principle</strong>: the hosting server and database must store only encrypted data and have mathematically zero access to the decryption keys or plaintext content. Existing open-source implementations frequently suffer from several architectural flaws:
+  </p>
+  <ul>
+    <li>Encryption keys are accidentally passed as URL query parameters (e.g., <code>?key=...</code>), exposing them in server access logs and web proxy caches.</li>
+    <li>Plaintext access tokens are stored directly in databases, enabling attackers who dump database tables to access all files.</li>
+    <li>File upload links remain active indefinitely without granular lifecycle control, such as self-destructing download limits or immediate revocation.</li>
+    <li>User-provided file paths are used directly on the server filesystem, creating path traversal vulnerabilities.</li>
+  </ul>
+
+  <h2>1.3 Project Objectives</h2>
+  <p>The primary objectives of this project are:</p>
+  <ol>
+    <li><strong>Client-Side Zero-Knowledge Encryption:</strong> Implement 256-bit AES-GCM encryption in the user's browser using native Web Crypto APIs before any file data leaves the local workstation.</li>
+    <li><strong>URL Fragment Isolation:</strong> Place the secret decryption key exclusively in the URL fragment (<code>#key=...</code>) so that web clients never transmit the key across the network to the server.</li>
+    <li><strong>Cryptographically Secure Token Hashing:</strong> Generate 256-bit access and revocation tokens and store only their SHA-256 digests in MySQL.</li>
+    <li><strong>Ephemeral Access Control:</strong> Enforce configurable expiration durations (15m to 7 days), atomic download counters (single-use self-destruct limits), and instantaneous revocation that purges physical files from disk.</li>
+    <li><strong>Production Engineering:</strong> Implement the solution using Java 21 LTS, Spring Boot 3.3.4, and MySQL, supported by automated unit and integration test suites.</li>
+  </ol>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 2: LITERATURE SURVEY                                              -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 2: Literature Survey &amp; Theoretical Background</h1>
+
+  <h2>2.1 Symmetric Cryptography &amp; Authenticated Encryption</h2>
+  <p>
+    Symmetric encryption algorithms employ the same secret key for both data encryption and decryption. Early modes such as Electronic Codebook (ECB) and Cipher Block Chaining (CBC) provided confidentiality but failed to guarantee data integrity. In CBC mode, an adversary capable of intercepting ciphertext could perform bit-flipping attacks without detection unless an auxiliary Message Authentication Code (such as HMAC-SHA256) was explicitly applied.
+  </p>
+  <p>
+    To resolve this vulnerability, modern cryptographic standards utilize <strong>Authenticated Encryption with Associated Data (AEAD)</strong>. The foremost standard is <strong>AES-GCM (Galois/Counter Mode)</strong>, standardized in NIST SP 800-38D. AES-GCM combines counter-mode encryption (providing confidentiality) with universal hashing over a binary Galois Field $GF(2^{128})$ to produce a 128-bit authentication tag.
+  </p>
+  <div class="callout">
+    <div class="callout-title">Mathematical Formulation of AES-GCM</div>
+    Given a plaintext $P$, a 256-bit symmetric key $K$, and a unique 96-bit Initialization Vector $IV$:
+    <br>
+    $$C = \text{AES-CTR}_K(IV, P)$$
+    $$T = \text{GHASH}_H(\text{AAD} \mathbin{\Vert} C \mathbin{\Vert} \text{len}(\text{AAD}) \mathbin{\Vert} \text{len}(C)) \oplus E_K(J_0)$$
+    Where $C$ is the ciphertext, $T$ is the 128-bit authentication tag, and $H = E_K(0^{128})$ is the hash key. Any modification to $C$ or $IV$ results in tag mismatch and immediate decryption rejection.
+  </div>
+
+  <h2>2.2 URL Fragment Protocol Specification (RFC 3986)</h2>
+  <p>
+    According to the Internet Engineering Task Force (IETF) Uniform Resource Identifier (URI) Generic Syntax specification (<strong>RFC 3986, Section 3.5</strong>), a URI is structured into components:
+  </p>
+  <pre>URI = scheme ":" ["//" authority] path ["?" query] ["#" fragment]</pre>
+  <p>
+    The specification states that <em>"the fragment identifier component of a URI allows indirect identification of a secondary resource by reference to a primary resource... fragment identifiers are processed solely by the user agent (browser) and are never transmitted in HTTP request lines or headers."</em>
+  </p>
+  <p>
+    This project leverages this RFC standard as a security boundary: the secret decryption key is stored after <code>#key=...</code>, ensuring that no web server, CDN, proxy, or backend database ever observes the key.
+  </p>
+
+  <h2>2.3 Existing Systems vs. Proposed System</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Standard Cloud Storage</th>
+        <th>Generic Share Services</th>
+        <th>CryptaShare (Proposed)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Encryption Point</strong></td>
+        <td>Server-side (after transit)</td>
+        <td>Client or Server (inconsistent)</td>
+        <td><strong>Strictly Browser Client (Pre-transit)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Key Ownership</strong></td>
+        <td>Cloud Provider</td>
+        <td>Server or query params</td>
+        <td><strong>Client-Only (URL Fragment #)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Database Token Storage</strong></td>
+        <td>Plaintext access IDs</td>
+        <td>Plaintext tokens</td>
+        <td><strong>SHA-256 Hashed Digests Only</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Self-Destruct Limits</strong></td>
+        <td>Paid / Unavailable</td>
+        <td>Limited support</td>
+        <td><strong>Built-in Atomic Limits (1, 3, 5, 10)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Revocation Mechanism</strong></td>
+        <td>Hides link only</td>
+        <td>Metadata flag only</td>
+        <td><strong>Immediate Ciphertext Disk Purge</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 3: REQUIREMENTS SPECIFICATION                                    -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 3: System Requirements Specification</h1>
+
+  <h2>3.1 Functional Requirements</h2>
+  <ul>
+    <li><strong>FR-1 (Client Encryption):</strong> The system must encrypt files using AES-256-GCM locally in the client browser prior to transmitting data.</li>
+    <li><strong>FR-2 (Key Handling):</strong> The browser must generate keys locally and embed them exclusively in the URL fragment; the backend must reject any request that attempts to pass encryption keys.</li>
+    <li><strong>FR-3 (Token Hashing):</strong> The backend must generate 256-bit random access and revocation tokens and store only their SHA-256 hashes in MySQL.</li>
+    <li><strong>FR-4 (Lifecycle Enforcement):</strong> The system must automatically reject download requests for expired, revoked, or download-exhausted links with HTTP 410 Gone.</li>
+    <li><strong>FR-5 (Immediate Revocation):</strong> When an uploader presents a valid revocation token, the system must set the revoked status and delete the physical ciphertext file from disk.</li>
+    <li><strong>FR-6 (In-Browser Decryption):</strong> The recipient interface must stream the ciphertext, verify the GCM authentication tag, and trigger a native download preserving the original filename and MIME type.</li>
+  </ul>
+
+  <h2>3.2 Non-Functional Requirements</h2>
+  <ul>
+    <li><strong>NFR-1 (Security &amp; Zero Knowledge):</strong> Even with root database access, a server administrator must be unable to decrypt any stored file.</li>
+    <li><strong>NFR-2 (Performance):</strong> Server CPU utilization remains minimal because cryptographic computations are offloaded to client runtimes.</li>
+    <li><strong>NFR-3 (Integrity):</strong> Any byte-level modification of ciphertext or IV must cause immediate decryption failure.</li>
+    <li><strong>NFR-4 (Portability):</strong> Operates on standard desktop and mobile browsers supporting Web Crypto API without external plugins or frameworks.</li>
+  </ul>
+
+  <h2>3.3 Technology Stack</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Selected Technology</th>
+        <th>Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Programming Language</strong></td>
+        <td>Java 21 LTS</td>
+        <td>Modern runtime, strong typing, record types, and built-in cryptographic security.</td>
+      </tr>
+      <tr>
+        <td><strong>Backend Framework</strong></td>
+        <td>Spring Boot 3.3.4</td>
+        <td>Industry-standard enterprise REST API framework with embedded Tomcat.</td>
+      </tr>
+      <tr>
+        <td><strong>Data Persistence</strong></td>
+        <td>Spring Data JPA &amp; MySQL 8.0</td>
+        <td>Relational integrity, parameterized queries, and indexed SHA-256 token lookups.</td>
+      </tr>
+      <tr>
+        <td><strong>Testing Framework</strong></td>
+        <td>JUnit 5 &amp; H2 Database</td>
+        <td>Automated unit tests and mock integration tests running in isolated in-memory DB.</td>
+      </tr>
+      <tr>
+        <td><strong>Client Cryptography</strong></td>
+        <td>Web Crypto API (SubtleCrypto)</td>
+        <td>Native, hardware-accelerated, browser-standard AES-GCM implementation.</td>
+      </tr>
+      <tr>
+        <td><strong>Frontend Stack</strong></td>
+        <td>HTML5, CSS3, Vanilla JavaScript</td>
+        <td>Zero external CDN dependencies, lightweight, and fully offline-capable.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 4: ARCHITECTURE & DESIGN                                         -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 4: System Architecture &amp; Design</h1>
+
+  <h2>4.1 High-Level Architecture</h2>
+  <div class="diagram-box">
+    <div class="workflow-step">Uploader Browser<br>(Web Crypto AES-GCM)</div>
+    <div class="workflow-arrow">&xrarr; Ciphertext &xrarr;</div>
+    <div class="workflow-step">Spring Boot REST API<br>(0.0.0.0:8080)</div>
+    <div class="workflow-arrow">&xrarr;</div>
+    <div class="workflow-step">Physical Disk<br>(./storage/uploads/*.enc)</div>
+    <br><br>
+    <div class="workflow-step">Decryption Key (#key=...)<br>Stored in URL Fragment</div>
+    <div class="workflow-arrow">&xrarr; Recipient &xrarr;</div>
+    <div class="workflow-step">MySQL Database<br>(SHA-256 Hashes Only)</div>
+    <div class="caption">Figure 4.1: High-Level Zero-Knowledge System Architecture</div>
+  </div>
+
+  <h2>4.2 Detailed Sequence Workflow</h2>
+  <p>The system operates across three primary lifecycles:</p>
+  <ol>
+    <li><strong>Encryption &amp; Upload Phase:</strong>
+      <ol type="a">
+        <li>The client generates a 256-bit key $K$ and a 12-byte IV.</li>
+        <li>The plaintext $P$ is encrypted into ciphertext $C$ and authentication tag $T$.</li>
+        <li>The payload $IV \mathbin{\Vert} C \mathbin{\Vert} T$ is transmitted via <code>POST /api/files/upload</code>.</li>
+        <li>The backend generates 256-bit random tokens $T_{access}$ and $T_{revoke}$, hashes them with SHA-256, stores the ciphertext to a UUID file on disk, and writes metadata to MySQL.</li>
+        <li>The client constructs the sharing link with $T_{access}$ as a query parameter and $K$ as the URL fragment.</li>
+      </ol>
+    </li>
+    <li><strong>Verification &amp; Download Phase:</strong>
+      <ol type="a">
+        <li>The recipient opens the link; the browser extracts $T_{access}$ and $K$.</li>
+        <li>The browser calls <code>GET /api/files/meta?token=...</code> to verify status.</li>
+        <li>The server queries <code>token_hash = SHA-256(T_{access})</code>, enforcing expiration, revocation, and download count checks.</li>
+        <li>The recipient calls <code>GET /api/files/download?token=...</code>; the server increments the download counter and streams the ciphertext.</li>
+        <li>The recipient browser extracts the 12-byte IV, imports $K$, decrypts the payload, and triggers an in-browser file download.</li>
+      </ol>
+    </li>
+    <li><strong>Revocation &amp; Purge Phase:</strong>
+      <ol type="a">
+        <li>The uploader submits $T_{revoke}$ to <code>POST /api/files/revoke</code>.</li>
+        <li>The server computes <code>SHA-256(T_{revoke})</code> and locates the database record.</li>
+        <li>The server updates <code>revoked = TRUE</code> and permanently deletes <code>storage_filename</code> from disk.</li>
+      </ol>
+    </li>
+  </ol>
+
+  <h2>4.3 Database Schema: <code>file_metadata</code></h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Column Name</th>
+        <th>Data Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td>VARCHAR(36)</td>
+        <td>PRIMARY KEY</td>
+        <td>UUID identifier for internal record management.</td>
+      </tr>
+      <tr>
+        <td><code>original_filename</code></td>
+        <td>VARCHAR(255)</td>
+        <td>NOT NULL</td>
+        <td>Sanitized original name (restored on download).</td>
+      </tr>
+      <tr>
+        <td><code>storage_filename</code></td>
+        <td>VARCHAR(255)</td>
+        <td>UNIQUE, NOT NULL</td>
+        <td>Server-generated UUID filename on disk (<code>&lt;uuid&gt;.enc</code>).</td>
+      </tr>
+      <tr>
+        <td><code>content_type</code></td>
+        <td>VARCHAR(100)</td>
+        <td>NULLABLE</td>
+        <td>MIME type of original file (e.g. <code>application/pdf</code>).</td>
+      </tr>
+      <tr>
+        <td><code>ciphertext_size_bytes</code></td>
+        <td>BIGINT</td>
+        <td>NOT NULL</td>
+        <td>Physical size of encrypted payload on disk.</td>
+      </tr>
+      <tr>
+        <td><code>token_hash</code></td>
+        <td>VARCHAR(64)</td>
+        <td>UNIQUE, INDEX</td>
+        <td>SHA-256 hex digest of the download access token.</td>
+      </tr>
+      <tr>
+        <td><code>revoke_token_hash</code></td>
+        <td>VARCHAR(64)</td>
+        <td>UNIQUE, INDEX</td>
+        <td>SHA-256 hex digest of the revocation secret token.</td>
+      </tr>
+      <tr>
+        <td><code>created_at</code></td>
+        <td>TIMESTAMP(6)</td>
+        <td>NOT NULL</td>
+        <td>Record creation timestamp (UTC).</td>
+      </tr>
+      <tr>
+        <td><code>expires_at</code></td>
+        <td>TIMESTAMP(6)</td>
+        <td>INDEX, NOT NULL</td>
+        <td>Calculated link expiration timestamp.</td>
+      </tr>
+      <tr>
+        <td><code>revoked</code></td>
+        <td>BOOLEAN</td>
+        <td>NOT NULL</td>
+        <td>Status flag indicating if link has been revoked.</td>
+      </tr>
+      <tr>
+        <td><code>download_count</code></td>
+        <td>INT</td>
+        <td>NOT NULL</td>
+        <td>Total successful downloads recorded.</td>
+      </tr>
+      <tr>
+        <td><code>max_downloads</code></td>
+        <td>INT</td>
+        <td>NULLABLE</td>
+        <td>Maximum download limit (NULL = unlimited).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 5: IMPLEMENTATION DETAILS                                         -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 5: Implementation Details</h1>
+
+  <h2>5.1 Client-Side Cryptography (<code>crypto-utils.js</code>)</h2>
+  <p>
+    The client-side module manages AES-256-GCM key generation, file encryption, packaging of the 12-byte IV, and Base64URL conversions:
+  </p>
+  <pre>// Generates a 256-bit AES-GCM key in browser memory
+async generateAesKey() {
+  return await window.crypto.subtle.generateKey(
+    { name: "AES-GCM", length: 256 },
+    true, // Extractable for encoding into URL fragment
+    ["encrypt", "decrypt"]
+  );
+}
+
+// Encrypts file: prepends 12-byte IV to the ciphertext payload
+async encryptFile(file, key) {
+  const plaintextBuffer = await file.arrayBuffer();
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const ciphertextBuffer = await window.crypto.subtle.encrypt(
+    { name: "AES-GCM", iv: iv },
+    key,
+    plaintextBuffer
+  );
+  const combined = new Uint8Array(iv.length + ciphertextBuffer.byteLength);
+  combined.set(iv, 0);
+  combined.set(new Uint8Array(ciphertextBuffer), iv.length);
+  return new Blob([combined], { type: "application/octet-stream" });
+}</pre>
+
+  <h2>5.2 Server-Side Token Generation &amp; Hashing (<code>SecurityTokenService.java</code>)</h2>
+  <p>
+    Tokens are generated using Java's cryptographically secure pseudorandom number generator (<code>SecureRandom</code>) and hashed via SHA-256 before storage:
+  </p>
+  <pre>@Service
+public class SecurityTokenService {
+    private final SecureRandom secureRandom = new SecureRandom();
+
+    public String generateSecureToken() {
+        byte[] randomBytes = new byte[32]; // 256-bit entropy
+        secureRandom.nextBytes(randomBytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
+    public String hashToken(String token) {
+        return HashUtils.sha256Hex(token);
+    }
+}</pre>
+
+  <h2>5.3 Storage Service &amp; Path Traversal Mitigations (<code>FileStorageService.java</code>)</h2>
+  <p>
+    The storage subsystem isolates files from the web root and enforces boundary checks to neutralize directory traversal attacks:
+  </p>
+  <pre>public Path resolveAndValidate(String filename) {
+    Path resolvedPath = storageDirectory.resolve(filename).normalize();
+    if (!resolvedPath.startsWith(storageDirectory)) {
+        throw new FileStorageException("Path traversal attempt detected!");
+    }
+    return resolvedPath;
+}</pre>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 6: TESTING & VERIFICATION                                        -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 6: Testing &amp; Verification</h1>
+
+  <h2>6.1 Automated Test Suite Overview</h2>
+  <p>
+    The project includes an automated test suite executed via Apache Maven. Tests use an isolated in-memory H2 database with MySQL compatibility mode, verifying all operations without external database dependencies.
+  </p>
+  <div class="callout">
+    <div class="callout-title">Automated Test Execution Summary</div>
+    <strong>Command:</strong> <code>.\mvnw.cmd test</code><br>
+    <strong>Total Tests Executed:</strong> 24<br>
+    <strong>Failures:</strong> 0 &bull; <strong>Errors:</strong> 0 &bull; <strong>Skipped:</strong> 0<br>
+    <strong>Build Status:</strong> <code>BUILD SUCCESS</code> (Execution Time: 8.05 seconds)
+  </div>
+
+  <h2>6.2 Test Case Specifications &amp; Results</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Test ID</th>
+        <th>Test Suite</th>
+        <th>Scenario / Objective</th>
+        <th>Expected Result</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TC-01</td>
+        <td><code>SecurityTokenServiceTest</code></td>
+        <td>Verify 256-bit entropy token uniqueness</td>
+        <td>Tokens are non-null and distinct</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-02</td>
+        <td><code>SecurityTokenServiceTest</code></td>
+        <td>Verify SHA-256 digest format</td>
+        <td>Exact 64 hex characters</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-03</td>
+        <td><code>SecurityTokenServiceTest</code></td>
+        <td>Constant-time token verification</td>
+        <td>Match passes; tampered token fails</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-04</td>
+        <td><code>FileApiControllerTest</code></td>
+        <td>Query <code>GET /api/files/config</code></td>
+        <td>Returns public base URL &amp; 50MB limit</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-05</td>
+        <td><code>FileApiControllerTest</code></td>
+        <td>Invalid token metadata query</td>
+        <td>HTTP 404 Not Found</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-06</td>
+        <td><code>FileApiControllerTest</code></td>
+        <td>Expired link query</td>
+        <td>HTTP 410 Gone ("Link Expired")</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-07</td>
+        <td><code>FileApiControllerTest</code></td>
+        <td>Revoked link query</td>
+        <td>HTTP 410 Gone ("Link Revoked")</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-08</td>
+        <td><code>FileExchangeServiceTest</code></td>
+        <td>Upload storage &amp; token hashing check</td>
+        <td>DB receives hashed tokens only</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-09</td>
+        <td><code>FileExchangeServiceTest</code></td>
+        <td>Download limit reached rejection</td>
+        <td>Throws <code>DownloadLimitExceededException</code></td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-10</td>
+        <td><code>FileExchangeServiceTest</code></td>
+        <td>File revocation disk purge check</td>
+        <td>Marks revoked; deletes disk file</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-11</td>
+        <td><code>IntegrationTest</code></td>
+        <td>Health endpoint check (<code>/api/health</code>)</td>
+        <td>HTTP 200 with status "UP"</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-12</td>
+        <td><code>IntegrationTest</code></td>
+        <td>Full binary upload/download integrity</td>
+        <td>Downloaded bytes match original exactly</td>
+        <td>PASSED</td>
+      </tr>
+      <tr>
+        <td>TC-13</td>
+        <td><code>IntegrationTest</code></td>
+        <td>Single-use self-destruct limit test</td>
+        <td>1st download 200 OK; 2nd download 410 Gone</td>
+        <td>PASSED</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 7: SECURITY ANALYSIS                                              -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 7: Security Analysis &amp; Limitations</h1>
+
+  <h2>7.1 Threat Model Analysis</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Threat Scenario</th>
+        <th>Attack Vector</th>
+        <th>System Defense Mechanism</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Database Leak</strong></td>
+        <td>Adversary steals SQL database dump.</td>
+        <td>Tokens are stored as SHA-256 hashes; ciphertext is on disk; keys are absent. Attackers cannot construct valid links or decrypt files.</td>
+      </tr>
+      <tr>
+        <td><strong>Filesystem Compromise</strong></td>
+        <td>Adversary gains access to server storage.</td>
+        <td>Files are stored as AES-256-GCM ciphertext without keys or plaintext filenames. Data remains unreadable.</td>
+      </tr>
+      <tr>
+        <td><strong>Man-in-the-Middle (MITM)</strong></td>
+        <td>Adversary intercepts network traffic.</td>
+        <td>Under HTTPS/TLS, traffic is encrypted. Furthermore, the URL fragment (<code>#key=...</code>) is never sent over HTTP.</td>
+      </tr>
+      <tr>
+        <td><strong>Data Tampering</strong></td>
+        <td>Attacker alters ciphertext bits on server.</td>
+        <td>AES-GCM authentication tag check fails during client decryption, throwing an integrity error and blocking file release.</td>
+      </tr>
+      <tr>
+        <td><strong>Path Traversal</strong></td>
+        <td>Attacker submits filenames with <code>../../</code>.</td>
+        <td>The server generates random UUIDs for physical filenames and validates normalized canonical paths.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>7.2 Academic Limitations</h2>
+  <ul>
+    <li><strong>Browser Memory Constraints:</strong> Very large files (&gt;1 GB) read into client RAM as an <code>ArrayBuffer</code> can cause memory pressure on low-spec client devices. (Production systems use Web Streams with chunked AEAD).</li>
+    <li><strong>Server Integrity Assumption:</strong> If the web hosting server is compromised, an attacker could tamper with served JavaScript (<code>crypto-utils.js</code>). In production, this is mitigated by Content Security Policy (CSP) and Subresource Integrity (SRI).</li>
+  </ul>
+
+  <!-- ========================================================================= -->
+  <!-- CHAPTER 8: CONCLUSION                                                     -->
+  <!-- ========================================================================= -->
+  <div class="page-break"></div>
+
+  <h1>Chapter 8: Conclusion &amp; Future Scope</h1>
+
+  <h2>8.1 Conclusion</h2>
+  <p>
+    The <strong>Secure File Exchange Portal (CryptaShare)</strong> demonstrates that zero-knowledge file sharing can be achieved using native browser standards and lightweight backend infrastructure. By performing authenticated AES-256-GCM encryption in the browser, storing secret keys exclusively within the URL fragment, and maintaining only SHA-256 digests in MySQL, the system eliminates centralized trust.
+  </p>
+  <p>
+    The platform incorporates ephemeral lifecycle controls, including time-based expiration, atomic download limits, and physical disk purges upon revocation. Built on Java 21 LTS and Spring Boot 3.3.4, the implementation passed all 24 automated unit and integration tests, providing a robust architecture suitable for technical evaluation.
+  </p>
+
+  <h2>8.2 Future Scope</h2>
+  <ul>
+    <li><strong>Web Stream AEAD Chunking:</strong> Implementing <code>TransformStream</code> to encrypt files in 64 KB chunks, enabling multi-gigabyte file transfers with minimal RAM consumption.</li>
+    <li><strong>Password-Derived Key Protection:</strong> Adding an optional client-side passphrase combined with PBKDF2 or Argon2id to derive encryption keys.</li>
+    <li><strong>Asymmetric Public Key Sharing:</strong> Integrating Web Crypto RSA-OAEP/ECDH to allow targeting specific recipient public keys.</li>
+  </ul>
+
+  <h1 style="margin-top: 40px;">References &amp; Bibliography</h1>
+  <ol>
+    <li>Dworkin, M. (2007). <em>Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC</em>. NIST Special Publication 800-38D.</li>
+    <li>Berners-Lee, T., Fielding, R., &amp; Masinter, L. (2005). <em>Uniform Resource Identifier (URI): Generic Syntax</em>. RFC 3986, Internet Engineering Task Force (IETF).</li>
+    <li>World Wide Web Consortium (W3C). (2017). <em>Web Cryptography API - W3C Recommendation</em>. https://www.w3.org/TR/WebCryptoAPI/</li>
+    <li>Walls, C. (2022). <em>Spring in Action (6th Edition)</em>. Manning Publications.</li>
+  </ol>
+
+</div>
+
+</body>
+</html>
